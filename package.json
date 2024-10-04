@@ -42,12 +42,28 @@
   ],
   "license": "ISC",
   "main": "index.js",
+  "module": "index.esm.mjs",
+  "exports": {
+    "require": "./index.js",
+    "import": "./index.esm.mjs"
+  },
+  "files": [
+    "bin",
+    "index.js",
+    "index.esm.mjs"
+  ],  
   "repository": {
     "type": "git",
     "url": "https://github.com/ungoldman/changelog-parser.git"
   },
   "scripts": {
     "release": "gh-release && npm publish",
-    "test": "standard && node test | tap-spec"
+    "test": "standard && node test | tap-spec",
+    "build:imports:named": "sed -i \"s/const\\ \\(.*\\)\\ =\\ require('\\(.*\\)')\\.\\(.*\\)/import {\\3 as \\1} from '\\2'/g\" index.esm.mjs",
+    "build:imports:defaults": "sed -i \"s/const\\ \\(.*\\)\\ =\\ require('\\(.*\\)')/import \\1 from '\\2'/g\" index.esm.mjs",
+    "build:imports": "npm run build:imports:named && npm run build:imports:defaults",
+    "build:exports": "sed -i 's/module.exports =/export default/' index.esm.mjs",
+    "build": "cp index.js index.esm.mjs && npm run build:imports && npm run build:exports",
+    "prepublishOnly": "npm build && npm test"
   }
 }
