@@ -20,7 +20,7 @@
   ],
   "dependencies": {
     "line-reader": "^0.2.4",
-    "remove-markdown": "^0.5.0"
+    "remove-markdown": "^0.6.0"
   },
   "devDependencies": {
     "gh-release": "^7.0.0",
